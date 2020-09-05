@@ -13,7 +13,7 @@
     <p>{{ track.description | truncate: 100 }}</p>
   </div>
   <div class="controls">
-    <ion-chip outline>
+    <ion-chip (click)="play()" outline>
       <ng-container *ngIf="isPlaying; else duration">
         <div class="bars-icon">
           <div class="bar"></div>

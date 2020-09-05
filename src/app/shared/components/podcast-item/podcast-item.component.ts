@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 
 import { DownloadsService } from '../../../downloads/downloads.service';
 import { FavoritesService } from '../../../favorites/favorites.service';
+import { PlayerService } from '../../services/player.service';
 
 export interface Author {
   id: number;
@@ -16,6 +17,7 @@ export interface PodcastTrack {
   author: Author;
   duration: number; // in seconds
   createdAt: string;
+  fileName: string;
 }
 
 export interface ExtendedPodcastTrack extends PodcastTrack {
@@ -34,7 +36,8 @@ export class PodcastItemComponent {
 
   constructor(
     private favoritesService: FavoritesService,
-    private downloadsService: DownloadsService
+    private downloadsService: DownloadsService,
+    private playerService: PlayerService
   ) {}
 
   addToFavorites() {
@@ -61,7 +64,13 @@ export class PodcastItemComponent {
   }
 
   get isPlaying() {
-    // TODO
-    return this.track?.id === 1;
+    return (
+      this.playerService.isPlaying &&
+      this.track?.id === this.playerService.currentTrack?.id
+    );
+  }
+
+  play() {
+    this.playerService.playOrPause(this.track);
   }
 }

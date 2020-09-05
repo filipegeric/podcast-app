@@ -1,4 +1,4 @@
-<div class="player">
+<div *ngIf="currentTrack" class="player">
   <div *ngIf="expanded; else preview" class="expanded">
     <ion-icon
       (click)="expanded = false"
@@ -7,8 +7,8 @@
       name="chevron-down"
     ></ion-icon>
     <ion-label>
-      <h5>#1532 - Mike Tyson</h5>
-      <p>The Joe Rogan Experience</p>
+      <h5>{{ currentTrack.title }}</h5>
+      <p>{{ currentTrack.author?.name }}</p>
     </ion-label>
 
     <ion-buttons mode="ios" class="ion-justify-content-center">
@@ -30,20 +30,19 @@
 
     <div class="times">
       <ion-note>00:00</ion-note>
-      <ion-note>45:59</ion-note>
+      <ion-note>{{ currentTrack?.duration | duration: 'short' }}</ion-note>
     </div>
   </div>
 
   <ng-template #preview>
     <div class="preview" (click)="expanded = true">
       <ion-avatar>
-        <img src="http://placekitten.com/400/400" />
+        <img [src]="currentTrack?.author?.image" />
       </ion-avatar>
       <ion-label>
-        <h5>#1532 - Mike Tyson</h5>
-        <ion-note>The Joe Rogan Experience</ion-note>
+        <h5>{{ currentTrack.title }}</h5>
+        <ion-note>{{ currentTrack.author.name }}</ion-note>
       </ion-label>
-      <!-- TODO: play music -->
       <ion-button
         (click)="playOrPause(); $event.stopPropagation()"
         fill="clear"

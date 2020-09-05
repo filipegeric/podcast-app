@@ -1,48 +1,56 @@
-import { Component } from '@angular/core';
-import { Plugins } from '@capacitor/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-const { MusicPlayer } = Plugins;
+import { PlayerService } from '../../services/player.service';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss'],
 })
-export class PlayerComponent {
-  isPlaying = false;
+export class PlayerComponent implements OnInit, OnDestroy {
   progress = 0;
   isBusy = false;
 
   expanded = false;
 
-  constructor() {
-    MusicPlayer.addListener('progress', (data: any) => {
-      console.log(data);
+  subscription: Subscription;
+
+  constructor(private playerService: PlayerService) {}
+
+  ngOnInit() {
+    this.subscription = this.playerService.progress$.subscribe((value) => {
+      console.log(value);
       if (this.isBusy) {
         return;
       }
-      this.progress = data.value;
+      this.progress = value;
     });
+  }
+
+  get isPlaying() {
+    return this.playerService.isPlaying;
+  }
+
+  get currentTrack() {
+    return this.playerService.currentTrack;
   }
 
   async playOrPause() {
     this.isBusy = true;
-    if (!this.isPlaying) {
-      await MusicPlayer.start({
-        url: 'https://itsallwidgets.com/podcast/download/episode-36.mp3',
-      });
-    } else {
-      await MusicPlayer.pause();
-    }
-    this.isPlaying = !this.isPlaying;
+    await this.playerService.playOrPause(this.currentTrack);
     this.isBusy = false;
   }
 
   async seek() {
     this.isBusy = true;
-    await MusicPlayer.seek({
-      value: this.progress,
-    });
+    await this.playerService.seek(this.progress);
     this.isBusy = false;
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
