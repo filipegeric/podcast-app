@@ -29,8 +29,15 @@
     </ion-chip>
     <ion-button (click)="addToFavorites()" fill="clear">
       <ion-icon
-        [color]="liked ? 'danger' : 'primary'"
-        [name]="'heart' + (liked ? '' : '-outline')"
+        *ngIf="liked"
+        color="danger"
+        name="heart"
+        size="large"
+      ></ion-icon>
+      <ion-icon
+        *ngIf="!liked"
+        color="primary"
+        name="heart-outline"
         size="large"
       ></ion-icon>
     </ion-button>
