@@ -33,11 +33,19 @@ export class PlayerService {
       await MusicPlayer.start({
         url: `${this.apiUrl}/podcasts/${track.fileName}`,
       });
-      this.currentTrack = track;
+      this.isPlaying = true;
     } else {
-      await MusicPlayer.pause();
+      this.isPlaying = false;
+      if (track.id === this.currentTrack?.id) {
+        await MusicPlayer.pause();
+      } else {
+        await MusicPlayer.start({
+          url: `${this.apiUrl}/podcasts/${track.fileName}`,
+        });
+        this.isPlaying = true;
+      }
     }
-    this.isPlaying = !this.isPlaying;
+    this.currentTrack = track;
   }
 
   async seek(value: number) {
