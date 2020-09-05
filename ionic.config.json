@@ -1,0 +1,7 @@
+{
+  "name": "podcast-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

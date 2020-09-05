@@ -1,0 +1,32 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Podcasts</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      mode="ios"
+      (ionChange)="search($event)"
+      [debounce]="500"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="isLoading" class="spinner-wrapper">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="tags">
+      <ion-chip outline color="primary" *ngFor="let tag of tags">
+        {{ tag.name }}
+      </ion-chip>
+    </div>
+    <ion-list>
+      <app-podcast-item
+        *ngFor="let track of podcasts"
+        [track]="track"
+      ></app-podcast-item>
+    </ion-list>
+  </ng-container>
+</ion-content>

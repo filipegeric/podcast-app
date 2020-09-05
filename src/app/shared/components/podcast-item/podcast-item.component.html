@@ -1,0 +1,37 @@
+<div class="podcast-item ion-padding">
+  <div class="header">
+    <ion-avatar>
+      <img [src]="track?.author?.image" />
+    </ion-avatar>
+    <ion-label>
+      <h5>{{ track?.author?.name }}</h5>
+      <ion-note>{{ track?.createdAt | date }}</ion-note>
+    </ion-label>
+  </div>
+  <div class="content">
+    <h5>{{ track.title }}</h5>
+    <!-- TODO: add truncate pipe -->
+    <p>{{ track.description }}</p>
+  </div>
+  <div class="controls">
+    <ion-chip outline>
+      <ion-icon color="primary" name="play-circle-outline"></ion-icon>
+      <!-- TODO: add time pipe -->
+      <ion-label>{{ track.duration }}s</ion-label>
+    </ion-chip>
+    <ion-button (click)="addToFavorites()" fill="clear">
+      <ion-icon
+        [color]="liked ? 'danger' : 'primary'"
+        [name]="'heart' + (liked ? '' : '-outline')"
+        size="large"
+      ></ion-icon>
+    </ion-button>
+    <ion-button (click)="download()" fill="clear">
+      <ion-icon
+        [color]="downloaded ? 'success' : 'primary'"
+        [name]="'arrow-down-circle' + (downloaded ? '' : '-outline')"
+        size="large"
+      ></ion-icon>
+    </ion-button>
+  </div>
+</div>

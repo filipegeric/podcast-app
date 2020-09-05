@@ -1,0 +1,8 @@
+.tags {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 5px;
+}

@@ -1,0 +1,45 @@
+.podcast-item {
+  border-bottom: solid 1px lightgrey;
+  background: var(--ion-color-primary-contrast);
+
+  .header {
+    display: flex;
+    width: 100%;
+    ion-avatar {
+      --border-radius: 6px;
+      margin-right: 10px;
+      height: 50px;
+      width: 50px;
+    }
+
+    p {
+      color: var(--ion-color-dark);
+    }
+  }
+
+  .content {
+    p {
+      font-size: 14px;
+      margin: 0;
+    }
+  }
+
+  .controls {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    ion-chip {
+      margin-right: 10px;
+    }
+
+    ion-button {
+      --border-radius: 50%;
+      height: 30px;
+      width: 30px;
+      --padding-start: 0;
+      --padding-end: 0;
+      margin-right: 10px;
+    }
+  }
+}

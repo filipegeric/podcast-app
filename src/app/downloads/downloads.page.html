@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Downloads</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <app-podcast-item
+      *ngFor="let track of podcasts"
+      [track]="track"
+    ></app-podcast-item>
+  </ion-list>
+</ion-content>

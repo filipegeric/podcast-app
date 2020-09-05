@@ -1,0 +1,56 @@
+<div class="player">
+  <div *ngIf="expanded; else preview" class="expanded">
+    <ion-icon
+      (click)="expanded = false"
+      class="close-button"
+      size="large"
+      name="chevron-down"
+    ></ion-icon>
+    <ion-label>
+      <h5>#1532 - Mike Tyson</h5>
+      <p>The Joe Rogan Experience</p>
+    </ion-label>
+
+    <ion-buttons mode="ios" class="ion-justify-content-center">
+      <ion-button fill="clear">
+        <ion-icon name="play-skip-back-sharp"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="playOrPause()">
+        <ion-icon
+          size="large"
+          [name]="isPlaying ? 'pause-sharp' : 'play-sharp'"
+        ></ion-icon>
+      </ion-button>
+      <ion-button fill="clear">
+        <ion-icon name="play-skip-forward-sharp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-range [(ngModel)]="progress" (touchend)="seek()"></ion-range>
+
+    <div class="times">
+      <ion-note>00:00</ion-note>
+      <ion-note>45:59</ion-note>
+    </div>
+  </div>
+
+  <ng-template #preview>
+    <div class="preview" (click)="expanded = true">
+      <ion-avatar>
+        <img src="http://placekitten.com/400/400" />
+      </ion-avatar>
+      <ion-label>
+        <h5>#1532 - Mike Tyson</h5>
+        <ion-note>The Joe Rogan Experience</ion-note>
+      </ion-label>
+      <!-- TODO: play music -->
+      <ion-button
+        (click)="playOrPause(); $event.stopPropagation()"
+        fill="clear"
+        color="dark"
+      >
+        <ion-icon [name]="(isPlaying ? 'pause' : 'play') + '-sharp'"></ion-icon>
+      </ion-button>
+    </div>
+  </ng-template>
+</div>
