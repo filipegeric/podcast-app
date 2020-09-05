@@ -59,4 +59,9 @@ export class PodcastItemComponent {
   get liked() {
     return this.favoritesService.isInFavorites(this.track?.id);
   }
+
+  get isPlaying() {
+    // TODO
+    return this.track?.id === 1;
+  }
 }

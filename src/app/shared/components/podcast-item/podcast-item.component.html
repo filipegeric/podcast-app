@@ -10,14 +10,22 @@
   </div>
   <div class="content">
     <h5>{{ track.title }}</h5>
-    <!-- TODO: add truncate pipe -->
-    <p>{{ track.description }}</p>
+    <p>{{ track.description | truncate: 100 }}</p>
   </div>
   <div class="controls">
     <ion-chip outline>
-      <ion-icon color="primary" name="play-circle-outline"></ion-icon>
-      <!-- TODO: add time pipe -->
-      <ion-label>{{ track.duration }}s</ion-label>
+      <ng-container *ngIf="isPlaying; else duration">
+        <div class="bars-icon">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+        <ion-text>Playing</ion-text>
+      </ng-container>
+      <ng-template #duration>
+        <ion-icon color="primary" name="play-circle-outline"></ion-icon>
+        <ion-label>{{ track.duration | duration }}</ion-label>
+      </ng-template>
     </ion-chip>
     <ion-button (click)="addToFavorites()" fill="clear">
       <ion-icon
