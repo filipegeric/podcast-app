@@ -17,10 +17,13 @@ export class ApiService {
     return environment.apiUrl;
   }
 
-  getPodcasts(searchTerm?: string) {
+  getPodcasts(searchTerm?: string, tag?: Tag) {
     let params = new HttpParams();
     if (searchTerm) {
       params = params.append('q', searchTerm);
+    }
+    if (tag?.id) {
+      params = params.append('tag', tag.id.toString());
     }
     return this.http
       .get<PodcastTrack[]>(`${this.apiUrl}/podcasts`, { params })

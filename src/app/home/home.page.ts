@@ -16,6 +16,7 @@ export class HomePage {
   podcasts: PodcastTrack[] = [];
   tags: Tag[] = [];
   searchTerm = '';
+  activeTag: Tag = { id: 0, name: 'all' };
 
   constructor(private api: ApiService) {}
 
@@ -28,11 +29,20 @@ export class HomePage {
     this.fetchPodcasts();
   }
 
+  onTagClick(tag: Tag) {
+    this.activeTag = tag;
+    this.fetchPodcasts();
+  }
+
   async fetchPodcasts() {
     try {
       this.isLoading = true;
-      this.podcasts = await this.api.getPodcasts(this.searchTerm);
+      this.podcasts = await this.api.getPodcasts(
+        this.searchTerm,
+        this.activeTag
+      );
       this.tags = await this.api.getTags();
+      this.tags = [{ id: 0, name: 'all' }, ...this.tags];
     } catch (error) {
       console.error(error);
     } finally {

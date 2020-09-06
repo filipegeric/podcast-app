@@ -12,17 +12,23 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="isLoading" class="spinner-wrapper">
-    <ion-spinner></ion-spinner>
-  </div>
-
-  <ng-container *ngIf="!isLoading">
+  <!-- TODO: change true with errorText -->
+  <ng-container *ngIf="true">
     <div class="tags">
-      <ion-chip outline color="primary" *ngFor="let tag of tags">
+      <ion-chip
+        *ngFor="let tag of tags"
+        (click)="onTagClick(tag)"
+        [color]="tag.id === activeTag?.id ? 'primary' : 'dark'"
+        [style.background]="tag.id === activeTag?.id ? 'aliceblue': 'initial'"
+        outline
+      >
         {{ tag.name }}
       </ion-chip>
     </div>
-    <ion-list>
+    <div *ngIf="isLoading" class="spinner-wrapper">
+      <ion-spinner></ion-spinner>
+    </div>
+    <ion-list *ngIf="!isLoading">
       <app-podcast-item
         *ngFor="let track of podcasts"
         [track]="track"
