@@ -34,6 +34,8 @@ export class PodcastItemComponent {
   @Input()
   track: PodcastTrack;
 
+  isDownloading = false;
+
   constructor(
     private favoritesService: FavoritesService,
     private downloadsService: DownloadsService,
@@ -48,11 +50,18 @@ export class PodcastItemComponent {
     }
   }
 
-  download() {
-    if (this.downloaded) {
-      return;
+  async download() {
+    try {
+      if (this.downloaded) {
+        return;
+      }
+      this.isDownloading = true;
+      await this.downloadsService.addToDownloads(this.track);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.isDownloading = false;
     }
-    this.downloadsService.addToDownloads(this.track);
   }
 
   get downloaded() {

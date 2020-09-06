@@ -41,6 +41,16 @@
       --padding-end: 0;
       margin-right: 10px;
     }
+
+    .download-button {
+      position: relative;
+
+      ion-spinner {
+        position: absolute;
+        height: 36px;
+        width: 36px;
+      }
+    }
   }
 }
 

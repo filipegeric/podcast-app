@@ -41,7 +41,8 @@
         size="large"
       ></ion-icon>
     </ion-button>
-    <ion-button (click)="download()" fill="clear">
+    <ion-button (click)="download()" fill="clear" class="download-button">
+      <ion-spinner *ngIf="isDownloading" mode="md" color="dark"></ion-spinner>
       <ion-icon
         [color]="downloaded ? 'success' : 'primary'"
         [name]="'arrow-down-circle' + (downloaded ? '' : '-outline')"
