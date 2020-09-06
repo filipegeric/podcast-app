@@ -15,7 +15,8 @@ export class FavoritesService {
     this.platform
       .ready()
       .then(() => this.storageService.get('favorites'))
-      .then((value) => (this.favorites = value || []));
+      .then((value) => (this.favorites = value || []))
+      .catch(console.error);
   }
 
   isInFavorites(podcastId: number) {
