@@ -38,3 +38,14 @@
   height: 100%;
   width: 100%;
 }
+
+.custom-modal {
+  --height: 70%;
+  --border-radius: 6px;
+
+  .modal-wrapper,
+  .modal-shadow {
+    position: absolute;
+    bottom: -6px;
+  }
+}

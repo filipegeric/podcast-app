@@ -4,6 +4,23 @@
   position: relative;
   overflow: hidden;
 
+  &.details {
+    border-bottom: none;
+    .header {
+      display: block;
+      text-align: center;
+      ion-avatar {
+        height: 150px;
+        width: 150px;
+        margin: auto;
+      }
+    }
+
+    h5 {
+      text-align: center;
+    }
+  }
+
   .header {
     display: flex;
     width: 100%;

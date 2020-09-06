@@ -1,5 +1,9 @@
-<div class="podcast-item ion-padding ion-activatable">
-  <ion-ripple-effect></ion-ripple-effect>
+<div
+  (click)="openDetails()"
+  [ngClass]="{ details: details }"
+  class="podcast-item ion-padding ion-activatable"
+>
+  <ion-ripple-effect *ngIf="!details"></ion-ripple-effect>
   <div class="header">
     <ion-avatar>
       <img [src]="track?.author?.image" />
@@ -11,9 +15,16 @@
   </div>
   <div class="content">
     <h5>{{ track.title }}</h5>
-    <p>{{ track.description | truncate: 100 }}</p>
+    <div *ngIf="details">
+      <ion-chip *ngFor="let tag of track.tags" outline color="primary">
+        {{ tag.name }}
+      </ion-chip>
+    </div>
+    <p>
+      {{ details ? track.description : (track.description | truncate: 100) }}
+    </p>
   </div>
-  <div class="controls">
+  <div (click)="$event.stopPropagation()" class="controls">
     <ion-chip (click)="play()" outline>
       <ng-container *ngIf="isPlaying; else duration">
         <div class="bars-icon">

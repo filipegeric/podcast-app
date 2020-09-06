@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 import { DownloadsService } from '../../../downloads/downloads.service';
 import { FavoritesService } from '../../../favorites/favorites.service';
+import { Tag } from '../../services/api.service';
 import { PlayerService } from '../../services/player.service';
 
 export interface Author {
@@ -18,6 +20,7 @@ export interface PodcastTrack {
   duration: number; // in seconds
   createdAt: string;
   fileName: string;
+  tags?: Tag[];
 }
 
 export interface ExtendedPodcastTrack extends PodcastTrack {
@@ -34,14 +37,37 @@ export class PodcastItemComponent {
   @Input()
   track: PodcastTrack;
 
+  @Input()
+  details = false;
+
   isDownloading = false;
   isLoading = false;
 
   constructor(
     private favoritesService: FavoritesService,
     private downloadsService: DownloadsService,
-    private playerService: PlayerService
+    private playerService: PlayerService,
+    private modalController: ModalController
   ) {}
+
+  openDetails() {
+    if (this.details) {
+      return;
+    }
+    this.modalController
+      .create({
+        component: PodcastItemComponent,
+        componentProps: {
+          track: this.track,
+          details: true,
+        },
+        swipeToClose: true,
+        cssClass: 'custom-modal',
+        mode: 'ios',
+      })
+      .then((m) => m.present())
+      .catch(console.error);
+  }
 
   addToFavorites() {
     if (this.liked) {
