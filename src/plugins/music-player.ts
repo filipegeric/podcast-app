@@ -2,14 +2,14 @@ import { WebPlugin } from '@capacitor/core';
 import { Howl } from 'howler';
 
 export interface MusicPlayer {
-  start(data: { url: string }): Promise<void>;
+  start(data: { url: string; id: any }): Promise<void>;
   pause(): Promise<void>;
   seek(data: { value: number }): Promise<void>;
 }
 
 export class MusicPlayerWeb extends WebPlugin implements MusicPlayer {
   private player: Howl = null;
-  private activeUrl: string = null;
+  private activeId: any = null;
 
   constructor() {
     super({
@@ -18,19 +18,19 @@ export class MusicPlayerWeb extends WebPlugin implements MusicPlayer {
     });
   }
 
-  async start(data: { url: string }): Promise<void> {
+  async start(data: { url: string; id: any }): Promise<void> {
     if (!data?.url) {
       throw new Error('Property url must be defined');
     }
 
-    if (this.player && !this.player.playing() && this.activeUrl === data.url) {
+    if (this.player && !this.player.playing() && this.activeId === data.id) {
       this.player.play();
       return;
     }
 
     this.player?.unload();
 
-    this.activeUrl = data.url;
+    this.activeId = data.id;
 
     let src = data.url;
 

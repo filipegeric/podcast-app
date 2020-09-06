@@ -44,6 +44,7 @@ export class PlayerService {
     if (!this.isPlaying) {
       await MusicPlayer.start({
         url,
+        id: track.id,
       });
       this.isPlaying = true;
     } else {
@@ -53,6 +54,7 @@ export class PlayerService {
       } else {
         await MusicPlayer.start({
           url,
+          id: track.id,
         });
         this.isPlaying = true;
       }
