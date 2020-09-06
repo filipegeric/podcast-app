@@ -3,6 +3,7 @@ import { openDB } from 'idb';
 
 export interface Downloader {
   download(data: { url: string }): Promise<any>;
+  get(data: { url: string }): Promise<any>;
 }
 
 export class DownloaderWeb extends WebPlugin implements Downloader {
@@ -38,7 +39,7 @@ export class DownloaderWeb extends WebPlugin implements Downloader {
     });
   }
 
-  async get(url: string) {
+  async get({ url }: { url: string }) {
     const database = await openDB('Downloads', 1, {
       upgrade: (db) => {
         const store = db.createObjectStore('downloads', {

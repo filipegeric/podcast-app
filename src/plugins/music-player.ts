@@ -32,13 +32,25 @@ export class MusicPlayerWeb extends WebPlugin implements MusicPlayer {
 
     this.activeUrl = data.url;
 
+    let src = data.url;
+
+    if ((data.url as any) instanceof Blob) {
+      src = URL.createObjectURL(data.url);
+    }
+
     this.player = new Howl({
-      src: data.url,
+      src,
       html5: true,
+      format: ['mp3'],
       onplay: () => {
         console.log('onplay');
         this.updateProgress();
       },
+      onload: () => {
+        console.log('loaded');
+      },
+      onloaderror: (e) => console.error(e),
+      onplayerror: (e) => console.error(e),
     });
     this.player.play();
   }

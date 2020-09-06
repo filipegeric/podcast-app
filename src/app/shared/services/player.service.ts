@@ -5,9 +5,10 @@ import { Subject } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { MusicPlayer } from '../../../plugins/music-player';
+import { DownloadsService } from '../../downloads/downloads.service';
 import { PodcastTrack } from '../components/podcast-item/podcast-item.component';
 
-const { MusicPlayer } = Plugins;
+const { MusicPlayer, Downloader } = Plugins;
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
@@ -16,7 +17,10 @@ export class PlayerService {
 
   progress$ = new Subject<number>();
 
-  constructor(private platform: Platform) {
+  constructor(
+    private platform: Platform,
+    private downloadsService: DownloadsService
+  ) {
     this.platform.ready().then(() => {
       MusicPlayer.addListener('progress', (data: any) => {
         this.progress$.next(data.value);
@@ -29,9 +33,17 @@ export class PlayerService {
   }
 
   async playOrPause(track: PodcastTrack) {
+    let url = `${this.apiUrl}/podcasts/${track.fileName}`;
+
+    if (this.downloadsService.isInDownloads(track.id)) {
+      const result = await Downloader.get({ url });
+      if (result?.value) {
+        url = result.value;
+      }
+    }
     if (!this.isPlaying) {
       await MusicPlayer.start({
-        url: `${this.apiUrl}/podcasts/${track.fileName}`,
+        url,
       });
       this.isPlaying = true;
     } else {
@@ -40,7 +52,7 @@ export class PlayerService {
         await MusicPlayer.pause();
       } else {
         await MusicPlayer.start({
-          url: `${this.apiUrl}/podcasts/${track.fileName}`,
+          url,
         });
         this.isPlaying = true;
       }
