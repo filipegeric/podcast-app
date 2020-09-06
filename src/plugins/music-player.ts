@@ -19,40 +19,43 @@ export class MusicPlayerWeb extends WebPlugin implements MusicPlayer {
   }
 
   async start(data: { url: string; id: any }): Promise<void> {
-    if (!data?.url) {
-      throw new Error('Property url must be defined');
-    }
+    return new Promise((resolve, reject) => {
+      if (!data?.url) {
+        reject('Property url must be defined');
+      }
 
-    if (this.player && !this.player.playing() && this.activeId === data.id) {
+      if (this.player && !this.player.playing() && this.activeId === data.id) {
+        this.player.play();
+        return resolve();
+      }
+
+      this.player?.unload();
+
+      this.activeId = data.id;
+
+      let src = data.url;
+
+      if ((data.url as any) instanceof Blob) {
+        src = URL.createObjectURL(data.url);
+      }
+
+      this.player = new Howl({
+        src,
+        html5: true,
+        format: ['mp3'],
+        onplay: () => {
+          console.log('onplay');
+          this.updateProgress();
+        },
+        onload: () => {
+          console.log('loaded');
+          resolve();
+        },
+        onloaderror: (e) => console.error(e),
+        onplayerror: (e) => console.error(e),
+      });
       this.player.play();
-      return;
-    }
-
-    this.player?.unload();
-
-    this.activeId = data.id;
-
-    let src = data.url;
-
-    if ((data.url as any) instanceof Blob) {
-      src = URL.createObjectURL(data.url);
-    }
-
-    this.player = new Howl({
-      src,
-      html5: true,
-      format: ['mp3'],
-      onplay: () => {
-        console.log('onplay');
-        this.updateProgress();
-      },
-      onload: () => {
-        console.log('loaded');
-      },
-      onloaderror: (e) => console.error(e),
-      onplayerror: (e) => console.error(e),
     });
-    this.player.play();
   }
 
   async pause(): Promise<void> {

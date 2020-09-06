@@ -21,11 +21,17 @@
           <div class="bar"></div>
           <div class="bar"></div>
         </div>
-        <ion-text>Playing</ion-text>
+        <ion-label>Playing</ion-label>
       </ng-container>
       <ng-template #duration>
-        <ion-icon color="primary" name="play-circle-outline"></ion-icon>
-        <ion-label>{{ track.duration | duration }}</ion-label>
+        <ng-container *ngIf="isLoading">
+          <ion-spinner class="loading-spinner" color="primary"></ion-spinner>
+          <ion-label>Loading...</ion-label>
+        </ng-container>
+        <ng-container *ngIf="!isLoading">
+          <ion-icon color="primary" name="play-circle-outline"></ion-icon>
+          <ion-label>{{ track.duration | duration }}</ion-label>
+        </ng-container>
       </ng-template>
     </ion-chip>
     <ion-button (click)="addToFavorites()" fill="clear">

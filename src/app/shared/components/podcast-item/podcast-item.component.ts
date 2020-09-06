@@ -35,6 +35,7 @@ export class PodcastItemComponent {
   track: PodcastTrack;
 
   isDownloading = false;
+  isLoading = false;
 
   constructor(
     private favoritesService: FavoritesService,
@@ -79,7 +80,9 @@ export class PodcastItemComponent {
     );
   }
 
-  play() {
-    this.playerService.playOrPause(this.track);
+  async play() {
+    this.isLoading = true;
+    await this.playerService.playOrPause(this.track);
+    this.isLoading = false;
   }
 }
