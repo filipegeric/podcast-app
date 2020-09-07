@@ -42,9 +42,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.isBusy = false;
   }
 
-  async seek() {
+  async seek(value: any) {
     this.isBusy = true;
-    await this.playerService.seek(this.progress);
+    await this.playerService.seek(value);
     this.isBusy = false;
   }
 

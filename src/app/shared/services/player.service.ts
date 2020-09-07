@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
@@ -19,11 +19,14 @@ export class PlayerService {
 
   constructor(
     private platform: Platform,
-    private downloadsService: DownloadsService
+    private downloadsService: DownloadsService,
+    private zone: NgZone
   ) {
     this.platform.ready().then(() => {
       MusicPlayer.addListener('progress', (data: any) => {
-        this.progress$.next(data.value);
+        this.zone.run(() => {
+          this.progress$.next(data.value);
+        });
       });
     });
   }
