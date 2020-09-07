@@ -30,6 +30,8 @@ export class DownloadsService {
   async addToDownloads(track: PodcastTrack) {
     const res = await Downloader.download({
       url: `${environment.apiUrl}/podcasts/${track.fileName}`,
+      title: track.title,
+      description: track.description,
     });
     console.log(res);
     this.downloads.push(track);

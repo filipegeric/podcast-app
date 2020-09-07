@@ -1,6 +1,11 @@
 import { WebPlugin } from '@capacitor/core';
 import { openDB } from 'idb';
 
+export interface DownloadOptions {
+  url: string;
+  title?: string;
+  description?: string;
+}
 export interface Downloader {
   download(data: { url: string }): Promise<any>;
   get(data: { url: string }): Promise<any>;
@@ -14,7 +19,7 @@ export class DownloaderWeb extends WebPlugin implements Downloader {
     });
   }
 
-  async download({ url }: { url: string }): Promise<any> {
+  async download({ url }: DownloadOptions): Promise<any> {
     const database = await openDB('Downloads', 1, {
       upgrade: (db) => {
         const store = db.createObjectStore('downloads', {
