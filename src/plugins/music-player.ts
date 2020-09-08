@@ -1,6 +1,8 @@
 import { WebPlugin } from '@capacitor/core';
 import { Howl } from 'howler';
 
+import { PodcastTrack } from '../app/shared/components/podcast-item/podcast-item.component';
+
 export interface MusicPlayer {
   start(data: { url: string; id: any }): Promise<void>;
   pause(): Promise<void>;
@@ -18,7 +20,12 @@ export class MusicPlayerWeb extends WebPlugin implements MusicPlayer {
     });
   }
 
-  async start(data: { url: string; id: any }): Promise<void> {
+  async start(data: {
+    url: string;
+    id: any;
+    track?: PodcastTrack;
+  }): Promise<void> {
+    this.setupMediaSession(data.track);
     return new Promise((resolve, reject) => {
       if (!data?.url) {
         reject('Property url must be defined');
@@ -84,6 +91,40 @@ export class MusicPlayerWeb extends WebPlugin implements MusicPlayer {
       setTimeout(() => {
         this.updateProgress();
       }, 1000);
+    }
+  }
+
+  private setupMediaSession(track: PodcastTrack) {
+    if ('mediaSession' in navigator && track) {
+      const mediaSession = (navigator as any).mediaSession;
+      mediaSession.metadata = new (window as any).MediaMetadata({
+        title: track.title,
+        artist: track.author.name,
+        artwork: [
+          {
+            src: track.author.image,
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      });
+      mediaSession.setActionHandler('play', () => {
+        if (!this.player || this.player?.playing()) {
+          return;
+        }
+        this.player.play();
+        this.notifyListeners('action', { type: 'play' });
+      });
+      mediaSession.setActionHandler('pause', () => {
+        if (!this.player || !this.player?.playing()) {
+          return;
+        }
+        this.player.pause();
+        this.notifyListeners('action', { type: 'pause' });
+      });
+      // TODO:
+      mediaSession.setActionHandler('seekbackward', () => {});
+      mediaSession.setActionHandler('seekforward', () => {});
     }
   }
 }

@@ -26,7 +26,12 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-range #r [(ngModel)]="progress" (touchend)="seek(r.value)"></ion-range>
+    <ion-range
+      #r
+      [(ngModel)]="progress"
+      (touchend)="seek(r.value)"
+      (mouseup)="seek(r.value)"
+    ></ion-range>
 
     <div class="times">
       <ion-note>00:00</ion-note>

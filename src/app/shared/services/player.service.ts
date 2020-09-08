@@ -28,6 +28,21 @@ export class PlayerService {
           this.progress$.next(data.value);
         });
       });
+
+      MusicPlayer.addListener('action', (data: any) => {
+        this.zone.run(() => {
+          switch (data.type) {
+            case 'play':
+              this.isPlaying = true;
+              break;
+            case 'pause':
+              this.isPlaying = false;
+              break;
+            default:
+              break;
+          }
+        });
+      });
     });
   }
 
@@ -48,6 +63,7 @@ export class PlayerService {
       await MusicPlayer.start({
         url,
         id: track.id,
+        track,
       });
       this.isPlaying = true;
     } else {
@@ -58,6 +74,7 @@ export class PlayerService {
         await MusicPlayer.start({
           url,
           id: track.id,
+          track,
         });
         this.isPlaying = true;
       }
