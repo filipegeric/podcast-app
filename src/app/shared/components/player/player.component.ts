@@ -48,6 +48,16 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.isBusy = false;
   }
 
+  seekBack() {
+    const add = 1000 / this.currentTrack.duration;
+    this.seek(this.progress - add);
+  }
+
+  seekForward() {
+    const add = 1000 / this.currentTrack.duration;
+    this.seek(this.progress + add);
+  }
+
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();

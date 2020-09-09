@@ -13,7 +13,7 @@ export interface MusicPlayer {
   ): void;
   addListener(
     event: 'action',
-    listener: (data: { type: 'play' | 'pause' }) => void
+    listener: (data: { type: 'play' | 'pause' | 'end' }) => void
   ): void;
 }
 
@@ -65,6 +65,10 @@ export class MusicPlayerWeb extends WebPlugin implements MusicPlayer {
         onload: () => {
           console.log('loaded');
           resolve();
+        },
+        onend: () => {
+          console.log('end');
+          this.notifyListeners('action', { type: 'end' });
         },
         onloaderror: (e) => console.error(e),
         onplayerror: (e) => console.error(e),

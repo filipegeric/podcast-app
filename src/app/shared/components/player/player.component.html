@@ -12,8 +12,8 @@
     </ion-label>
 
     <ion-buttons mode="ios" class="ion-justify-content-center">
-      <ion-button fill="clear">
-        <ion-icon name="play-skip-back-sharp"></ion-icon>
+      <ion-button (click)="seekBack()" fill="clear">
+        <ion-icon name="play-back-sharp"></ion-icon>
       </ion-button>
       <ion-button fill="clear" (click)="playOrPause()">
         <ion-icon
@@ -21,8 +21,8 @@
           [name]="isPlaying ? 'pause-sharp' : 'play-sharp'"
         ></ion-icon>
       </ion-button>
-      <ion-button fill="clear">
-        <ion-icon name="play-skip-forward-sharp"></ion-icon>
+      <ion-button (click)="seekForward()" fill="clear">
+        <ion-icon name="play-forward-sharp"></ion-icon>
       </ion-button>
     </ion-buttons>
 

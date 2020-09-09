@@ -36,6 +36,7 @@ export class PlayerService {
               this.isPlaying = true;
               break;
             case 'pause':
+            case 'end':
               this.isPlaying = false;
               break;
             default:
