@@ -23,13 +23,13 @@ export class PlayerService {
     private zone: NgZone
   ) {
     this.platform.ready().then(() => {
-      MusicPlayer.addListener('progress', (data: any) => {
+      MusicPlayer.addListener('progress', (data) => {
         this.zone.run(() => {
           this.progress$.next(data.value);
         });
       });
 
-      MusicPlayer.addListener('action', (data: any) => {
+      MusicPlayer.addListener('action', (data) => {
         this.zone.run(() => {
           switch (data.type) {
             case 'play':

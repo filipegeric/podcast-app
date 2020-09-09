@@ -4,9 +4,17 @@ import { Howl } from 'howler';
 import { PodcastTrack } from '../app/shared/components/podcast-item/podcast-item.component';
 
 export interface MusicPlayer {
-  start(data: { url: string; id: any }): Promise<void>;
+  start(data: { url: string; id: any; track?: PodcastTrack }): Promise<void>;
   pause(): Promise<void>;
   seek(data: { value: number }): Promise<void>;
+  addListener(
+    event: 'progress',
+    listener: (data: { value: number }) => void
+  ): void;
+  addListener(
+    event: 'action',
+    listener: (data: { type: 'play' | 'pause' }) => void
+  ): void;
 }
 
 export class MusicPlayerWeb extends WebPlugin implements MusicPlayer {

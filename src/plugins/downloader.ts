@@ -7,7 +7,11 @@ export interface DownloadOptions {
   description?: string;
 }
 export interface Downloader {
-  download(data: { url: string }): Promise<any>;
+  download(data: {
+    url: string;
+    title?: string;
+    description?: string;
+  }): Promise<any>;
   get(data: { url: string }): Promise<any>;
 }
 
