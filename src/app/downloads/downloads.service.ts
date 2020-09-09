@@ -38,6 +38,17 @@ export class DownloadsService {
     await this.save();
   }
 
+  async removeFromDownloads(track: PodcastTrack) {
+    if (!this.isInDownloads(track.id)) {
+      return;
+    }
+    await Downloader.remove({
+      url: `${environment.apiUrl}/podcasts/${track.fileName}`,
+    });
+    this.downloads = this.downloads.filter((el) => el.id !== track.id);
+    this.save();
+  }
+
   getDownloads() {
     return Promise.resolve(this.downloads);
   }

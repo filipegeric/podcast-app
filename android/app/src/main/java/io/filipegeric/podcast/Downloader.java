@@ -78,6 +78,20 @@ public class Downloader extends Plugin {
         call.success(result);
     }
 
+    @PluginMethod()
+    public void remove(PluginCall call) {
+        String url = call.getString("url");
+        Uri uri = Uri.parse(url);
+        String fileName = uri.getLastPathSegment();
+        String path = getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        File file = new File(path + "/" + fileName);
+        boolean exists = file.exists();
+        if(exists) {
+            file.delete();
+        }
+        call.success();
+    }
+
     @Override
     protected void handleOnDestroy() {
         getContext().unregisterReceiver(onDownloadComplete);

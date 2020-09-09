@@ -5,6 +5,7 @@ import { DownloadsService } from '../../../downloads/downloads.service';
 import { FavoritesService } from '../../../favorites/favorites.service';
 import { Tag } from '../../services/api.service';
 import { PlayerService } from '../../services/player.service';
+import { UiService } from '../../services/ui.service';
 
 export interface Author {
   id: number;
@@ -21,11 +22,6 @@ export interface PodcastTrack {
   createdAt: string;
   fileName: string;
   tags?: Tag[];
-}
-
-export interface ExtendedPodcastTrack extends PodcastTrack {
-  downloaded?: boolean;
-  liked?: boolean;
 }
 
 @Component({
@@ -47,7 +43,8 @@ export class PodcastItemComponent {
     private favoritesService: FavoritesService,
     private downloadsService: DownloadsService,
     private playerService: PlayerService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private uiService: UiService
   ) {}
 
   openDetails() {
@@ -80,10 +77,19 @@ export class PodcastItemComponent {
   async download() {
     try {
       if (this.downloaded) {
+        if (
+          await this.uiService.confirm(
+            'Are you sure you want to delete this track from downloads?'
+          )
+        ) {
+          await this.downloadsService.removeFromDownloads(this.track);
+          this.uiService.showMessage('Track removed from downloads.');
+        }
         return;
       }
       this.isDownloading = true;
       await this.downloadsService.addToDownloads(this.track);
+      this.uiService.showMessage('Track downloaded.');
     } catch (error) {
       console.error(error);
     } finally {
