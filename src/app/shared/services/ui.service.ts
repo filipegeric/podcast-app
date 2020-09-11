@@ -1,14 +1,29 @@
-import { Injectable } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
+import { AlertController, Platform, ToastController } from '@ionic/angular';
+
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UiService {
+  theme: 'light' | 'dark' = 'light';
+
   constructor(
+    private storageService: StorageService,
     private alertController: AlertController,
-    private toastController: ToastController
-  ) {}
+    private toastController: ToastController,
+    private platform: Platform,
+    @Inject(DOCUMENT)
+    private document: Document
+  ) {
+    this.platform
+      .ready()
+      .then(() => this.storageService.get('theme'))
+      .then((theme) => this.setTheme(theme))
+      .catch(console.error);
+  }
 
   confirm(message = 'Are you sure?') {
     return new Promise((resolve) => {
@@ -42,5 +57,24 @@ export class UiService {
       })
       .then((t) => t.present())
       .catch(console.error);
+  }
+
+  async setTheme(theme?: 'light' | 'dark') {
+    if (!theme) {
+      return;
+    }
+    this.theme = theme;
+    this.storageService.save('theme', theme);
+    const classList = this.document.body.classList;
+    classList.remove('light', 'dark');
+    classList.add(theme);
+  }
+
+  changeTheme() {
+    if (this.theme === 'light') {
+      this.setTheme('dark');
+    } else {
+      this.setTheme('light');
+    }
   }
 }

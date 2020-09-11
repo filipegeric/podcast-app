@@ -1,6 +1,11 @@
 <ion-header translucent>
   <ion-toolbar>
     <ion-title>Podcasts</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="changeTheme()">
+        <ion-icon [name]="theme === 'light' ? 'moon' : 'sunny'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
     <ion-searchbar

@@ -3,6 +3,7 @@ import { Plugins } from '@capacitor/core';
 
 import { PodcastTrack } from '../shared/components/podcast-item/podcast-item.component';
 import { ApiService, Tag } from '../shared/services/api.service';
+import { UiService } from '../shared/services/ui.service';
 
 const { MusicPlayer } = Plugins;
 
@@ -18,7 +19,11 @@ export class HomePage {
   searchTerm = '';
   activeTag: Tag = { id: 0, name: 'all' };
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private uiService: UiService) {}
+
+  get theme() {
+    return this.uiService.theme;
+  }
 
   ionViewWillEnter() {
     this.fetchPodcasts();
@@ -48,5 +53,9 @@ export class HomePage {
     } finally {
       this.isLoading = false;
     }
+  }
+
+  changeTheme() {
+    this.uiService.changeTheme();
   }
 }

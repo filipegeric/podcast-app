@@ -25,7 +25,7 @@
     </p>
   </div>
   <div (click)="$event.stopPropagation()" class="controls">
-    <ion-chip (click)="play()" outline>
+    <ion-chip (click)="play()" outline color="dark">
       <ng-container *ngIf="isPlaying; else duration">
         <div class="bars-icon">
           <div class="bar"></div>

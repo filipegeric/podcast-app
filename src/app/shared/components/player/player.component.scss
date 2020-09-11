@@ -1,5 +1,5 @@
 .preview {
-  background-color: aliceblue;
+  background-color: var(--ion-toolbar-color);
   display: flex;
   justify-content: stretch;
   padding: 5px;
@@ -27,7 +27,7 @@
 }
 
 .expanded {
-  background-color: aliceblue;
+  background-color: var(--ion-toolbar-color);
   position: relative;
 
   .close-button {
@@ -48,4 +48,8 @@
     justify-content: space-between;
     padding: 0 5px;
   }
+}
+
+h5 {
+  color: var(--ion-text-color);
 }

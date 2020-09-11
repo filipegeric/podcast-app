@@ -1,6 +1,7 @@
 .podcast-item {
   border-bottom: solid 1px lightgrey;
-  background: var(--ion-color-primary-contrast);
+  background: var(--ion-background-color);
+  color: var(--ion-text-color);
   position: relative;
   overflow: hidden;
 
